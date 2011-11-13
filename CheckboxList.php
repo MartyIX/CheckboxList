@@ -115,6 +115,7 @@ class CheckboxList extends BaseControl
 	 * Returns separator HTML element template.
 	 *
 	 * @return Nette\Utils\Html
+	 * @return Nette\Web\Html
 	 */
 	public function getSeparatorPrototype()
 	{
