@@ -16,12 +16,19 @@
  * @copyright Copyright (c) 2004, 2009 David Grudl
  * @package   Nette\Extras
  */
-class CheckboxList extends FormControl
+
+namespace Nette\Forms\Controls;
+
+use Nette\Utils\Html,
+        Nette\Forms\Form,
+        Nette\Forms\Controls\BaseControl;
+
+class CheckboxList extends BaseControl
 {
-	/** @var Nette\Web\Html  separator element template */
+	/** @var Nette\Utils\Html  separator element template */
 	protected $separator;
 
-	/** @var Nette\Web\Html  container element template */
+	/** @var Nette\Utils\Html  container element template */
 	protected $container;
 
 	/** @var array */
@@ -31,19 +38,25 @@ class CheckboxList extends FormControl
 
 	/**
 	 * Form container extension method. Do not call directly.
-	 * 	 
+	 *
 	 * @param FormContainer $form
 	 * @param string $name
 	 * @param string $label
-	 * @param array $items	 
+	 * @param array $items
 	 * @return CheckboxList
 	 */
-	public static function addCheckboxList(FormContainer $form, $name, $label, array $items = NULL)
+	public static function addCheckboxList(Form $form, $name, $label, array $items = NULL)
 	{
 		return $form[$name] = new self($label, $items);
 	}
 
-
+	/**
+	 * Adds addCheckboxList() method to \Nette\Forms\Form
+	 */
+	public static function register()
+	{
+		Form::extensionMethod('addCheckboxList', callback(__CLASS__, 'addCheckboxList'));
+	}
 
 	/**
 	 * @param string $label
@@ -53,16 +66,16 @@ class CheckboxList extends FormControl
 	{
 		parent::__construct($label);
 		$this->control->type = 'checkbox';
-		$this->container = /*Nette\Web\*/Html::el();
-		$this->separator = /*Nette\Web\*/Html::el('br');
+		$this->container = Html::el();
+		$this->separator = Html::el('br');
 		if ($items !== NULL) $this->setItems($items);
 	}
 
 
 
 	/**
-	 * Returns selected radio value. NULL means nothing have been checked. 
-	 * 	 
+	 * Returns selected radio value. NULL means nothing have been checked.
+	 *
 	 * @return mixed
 	 */
 	public function getValue()
@@ -74,7 +87,7 @@ class CheckboxList extends FormControl
 
 	/**
 	 * Sets options from which to choose.
-	 * 	 
+	 *
 	 * @param array $items
 	 * @return CheckboxList  provides a fluent interface
 	 */
@@ -88,7 +101,7 @@ class CheckboxList extends FormControl
 
 	/**
 	 * Returns options from which to choose.
-	 * 
+	 *
 	 * @return array
 	 */
 	public function getItems()
@@ -100,8 +113,8 @@ class CheckboxList extends FormControl
 
 	/**
 	 * Returns separator HTML element template.
-	 * 	 
-	 * @return Nette\Web\Html
+	 *
+	 * @return Nette\Utils\Html
 	 */
 	public function getSeparatorPrototype()
 	{
@@ -112,8 +125,8 @@ class CheckboxList extends FormControl
 
 	/**
 	 * Returns container HTML element template.
-	 * 	 
-	 * @return Nette\Web\Html
+	 *
+	 * @return Nette\Utils\Html
 	 */
 	public function getContainerPrototype()
 	{
@@ -124,9 +137,9 @@ class CheckboxList extends FormControl
 
 	/**
 	 * Generates control's HTML element.
-	 * 	 
+	 *
 	 * @param mixed $key  Specify a key if you want to render just a single checkbox
-	 * @return Nette\Web\Html
+	 * @return Nette\Utils\Html
 	 */
 	public function getControl($key = NULL)
 	{
@@ -143,7 +156,7 @@ class CheckboxList extends FormControl
 		$id = $control->id;
 		$counter = -1;
 		$values = $this->value === NULL ? NULL : (array) $this->getValue();
-		$label = /*Nette\Web\*/Html::el('label');
+		$label = Html::el('label');
 
 		foreach ($this->items as $k => $val) {
 			$counter++;
@@ -153,7 +166,7 @@ class CheckboxList extends FormControl
 			$control->checked = (count($values) > 0) ? in_array($k, $values) : false;
 			$control->value = $k;
 
-			if ($val instanceof /*Nette\Web\*/Html) {
+			if ($val instanceof Html) {
 				$label->setHtml($val);
 			} else {
 				$label->setText($this->translate($val));
@@ -173,7 +186,7 @@ class CheckboxList extends FormControl
 
 	/**
 	 * Generates label's HTML element.
-	 * 	 
+	 *
 	 * @return Html
 	 */
 	public function getLabel($caption = NULL)
@@ -185,7 +198,7 @@ class CheckboxList extends FormControl
 
 	/**
 	 * Filled validator: has been any checkbox checked?
-	 * 	 
+	 *
 	 * @param IFormControl $control
 	 * @return bool
 	 */
