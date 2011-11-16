@@ -3,26 +3,29 @@
  * Cloned RadioList from Nette Framework distribution. Instead of radios use
  * checkboxes.
  *
- * @copyright  Copyright (c) 2004, 2009 David Grudl
+ * @copyright  Copyright (c) 2004, 2011 David Grudl
  * @license    http://nettephp.com/license  Nette license
  * @link       http://addons.nettephp.com/cs/checkboxlist
  * @package    Nette\Extras
  */
 
-/**
- * CheckboxList
- *
- * @author    David Grudl, Jan Vlcek
- * @copyright Copyright (c) 2004, 2009 David Grudl
- * @package   Nette\Extras
- */
-
 namespace Nette\Forms\Controls;
 
 use Nette\Utils\Html,
-        Nette\Forms\Form,
-        Nette\Forms\Controls\BaseControl;
+	Nette\Forms\Container,
+	Nette\Forms\Controls\BaseControl;
 
+
+
+/**
+ * CheckboxList
+ *
+ * @author    David Grudl
+ * @author    Jan Vlcek
+ * @author    Filip Procházka
+ * @copyright Copyright (c) 2004, 2011 David Grudl
+ * @package   Nette\Extras
+ */
 class CheckboxList extends BaseControl
 {
 	/** @var Nette\Utils\Html  separator element template */
@@ -37,28 +40,6 @@ class CheckboxList extends BaseControl
 
 
 	/**
-	 * Form container extension method. Do not call directly.
-	 *
-	 * @param FormContainer $form
-	 * @param string $name
-	 * @param string $label
-	 * @param array $items
-	 * @return CheckboxList
-	 */
-	public static function addCheckboxList(Form $form, $name, $label, array $items = NULL)
-	{
-		return $form[$name] = new self($label, $items);
-	}
-
-	/**
-	 * Adds addCheckboxList() method to \Nette\Forms\Form
-	 */
-	public static function register()
-	{
-		Form::extensionMethod('addCheckboxList', callback(__CLASS__, 'addCheckboxList'));
-	}
-
-	/**
 	 * @param string $label
 	 * @param array $items  Options from which to choose
 	 */
@@ -68,7 +49,9 @@ class CheckboxList extends BaseControl
 		$this->control->type = 'checkbox';
 		$this->container = Html::el();
 		$this->separator = Html::el('br');
-		if ($items !== NULL) $this->setItems($items);
+		if ($items !== NULL) {
+			$this->setItems($items);
+		}
 	}
 
 
@@ -197,15 +180,29 @@ class CheckboxList extends BaseControl
 		return $label;
 	}
 
+
+
 	/**
 	 * Filled validator: has been any checkbox checked?
 	 *
-	 * @param IFormControl $control
+	 * @param CheckboxList $control
 	 * @return bool
 	 */
-	public static function validateChecked(IFormControl $control)
+	public static function validateChecked(CheckboxList $control)
 	{
 		return $control->getValue() !== NULL;
+	}
+
+
+
+	/**
+	 * Adds addCheckboxList() method to Nette\Forms\Container
+	 */
+	public static function register()
+	{
+		Container::extensionMethod('addCheckboxList', function (Container $_this, $name, $label, array $items = NULL) {
+			return $_this[$name] = new CheckboxList($label, $items);
+		});
 	}
 
 }
