@@ -12,7 +12,7 @@
 
 		$items = array(1 => 'foo', 2 => 'bar');
 		$form->addCheckboxList('demo', 'Choices', $items)
-			->addRule('checked', 'Check something!');
+			->addRule(':checked', 'Check something!');
 
 		return $form;
 	}
