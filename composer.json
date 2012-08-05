@@ -1,4 +1,4 @@
-{
+ï»¿{
 	"name": "MartyIX/CheckboxList",
 	"description": "CheckboxList form control for Nette Framework",
 	"keywords": ["nette", "addons", "Checkbox"],
@@ -6,10 +6,10 @@
 	"license": ["WTFPL"],
 	"authors": [
 		{
-			"name": "Jan Vlèek"
+			"name": "Jan VlÄek"
 		},
 		{
-			"name": "Martin Všetièka"
+			"name": "Martin VÅ¡etiÄka"
 		}
 	],
 	"require": {
