@@ -13,6 +13,6 @@
 		$items = array(1 => 'foo', 2 => 'bar');
 		$form->addCheckboxList('demo', 'Choices', $items)
 			->addRule(':checked', 'Check something!');
-
+		$form->setDefaults(array('demo' => array(2))); // 'bar' is checked by default
 		return $form;
 	}
